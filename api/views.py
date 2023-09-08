@@ -2,11 +2,11 @@ from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserProfileSerializer
+from datetime import datetime, timezone
 
 
 class SlackUserView(APIView):
-    def get(request: Request, slack_name: str, track: str) -> Response:
+    def get(self, request: Request) -> Response:
         """
         Retrieve a user by their slack_name and track
         
@@ -26,12 +26,31 @@ class SlackUserView(APIView):
 
         """
 
-        try:
-            user = UserProfile.objects.get(slack_name=slack_name, track=track)
-        except UserProfile.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        slack_name = request.GET.get('slack_name')
+        track = request.GET.get('track')
 
-        serializer = UserProfileSerializer(user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if slack_name is None or track is None:
+            return Response({"error": "slack_name and track are required query parameters"}, status=status.HTTP_400_BAD_REQUEST)
 
 
+        current_day = datetime.now().astimezone(timezone.utc).strftime('%A')
+
+
+        # Validate UTC time (+/-2 hours)
+        utc_time = datetime.now(timezone.utc).replace(microsecond=0).isoformat() + 'Z'
+
+        github_repo_url = 'https://github.com/50-Course/hngx'
+        github_file_url = f'{github_repo_url}/blob/main/api/view.py'
+
+        return Response(
+            data = {
+                "slack_name": slack_name,
+                "current_day": current_day,
+                "utc_time": utc_time,
+                "track": track,
+                "github_file_url": github_file_url,
+                "github_repo_url": github_repo_url,
+                "status_code": status.HTTP_200_OK
+            },
+            status=status.HTTP_200_OK
+        )

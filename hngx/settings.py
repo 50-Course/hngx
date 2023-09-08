@@ -11,6 +11,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.messages',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
@@ -57,8 +58,6 @@ DATABASES = {
     }
 }
 
-
-AUTH_USER_MODEL='api.UserProfile'
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -85,6 +84,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+TIMEZONE = 'Africa/Lagos'
+
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PERMISSION_CLASSES': [
@@ -94,7 +95,7 @@ REST_FRAMEWORK = {
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'HNGX API',
-    'DESCRIPTION': 'API for HNGX',
+    'DESCRIPTION': 'API for HNGX Submission Task',
     'SCHEMA_PATH_PREFIX': r'/api',
     'SERVE_INCLUDE_SCHEMA': False,
     'SERVE_PUBLIC': True,
