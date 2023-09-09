@@ -3,14 +3,15 @@ FROM python:3.11.0a1-alpine3.14
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV DJANGO_DEBUG False
-ENV DJANGO_SECRET_KEY 'YOU-SHOULD-SET-THIS-IN-PRODUCTION@#&!$'
-ENV DJANGO_ALLOWED_HOSTS '*.render.com 127.0.0.1 localhost'
+ENV DJANGO_DEBUG=False
+ENV DJANGO_SECRET_KEY='YOU-SHOULD-SET-THIS-IN-PRODUCTION@#&!$'
+ENV DJANGO_ALLOWED_HOSTS='*.render.com 127.0.0.1 localhost 0.0.0.0'
 
 RUN mkdir /app
-COPY requirements.txt .
 
 WORKDIR /app
+
+COPY requirements.txt .
 
 RUN --mount=type=cache,target=/var/cache/apk \
     --mount=type=cache,target=/var/lib/apk \
